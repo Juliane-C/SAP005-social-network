@@ -7,9 +7,9 @@ import { onNavigate } from './utils/history.js';
 const routeRender = () => {
   const rootDiv = document.getElementById('root');
   const routes = {
-    '/' : Home,
+    '/': Home,
     '/login': Login,
-    '/register' : Register,
+    '/register': Register,
   };
 
   rootDiv.innerHTML = '';
@@ -22,19 +22,19 @@ window.addEventListener('load', () => {
     .getElementById('home')
     .addEventListener('click', (e) => {
       e.preventDefault();
-      onNavigate('/')
+      onNavigate('/');
     });
   document
     .getElementById('login')
     .addEventListener('click', (e) => {
       e.preventDefault();
-      onNavigate('/login')
+      onNavigate('/login');
     });
   document
     .getElementById('register')
     .addEventListener('click', (e) => {
       e.preventDefault();
-      onNavigate('/register')
+      onNavigate('/register');
     });
 
   routeRender();
