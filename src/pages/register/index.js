@@ -1,4 +1,5 @@
 import { googleLogin } from '../../services/index.js';
+import { onNavigate } from '../../utils/history.js';
 
 export const Register = () => {
   // Coloque sua página
@@ -27,8 +28,8 @@ export const Register = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         // Signed in
-        // ...
         console.log('Deu bom! :D', user);
+        onNavigate('/');
       })
       .catch((error) => {
         const errorCode = error.code;
