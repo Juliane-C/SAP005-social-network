@@ -1,5 +1,7 @@
 // exporte suas funções
 
+import { onNavigate } from "../utils/history.js";
+
 export const myFunction = () => {
   // seu código aqui
   console.log('Olá mundo!');
@@ -18,6 +20,7 @@ export const googleLogin = (e) => {
       // ...
       console.log('Googlou!') 
       console.log(token, user);
+      onNavigate('/');
     })
     .catch((error) => {
       // Handle Errors here.
