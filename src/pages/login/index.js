@@ -12,9 +12,9 @@ export const Login = () => {
         <button id="login-btn">Entrar</button>
         <p>-- ou --</p>
         <button id="google-signin">Entrar com Google</button>
-        <p>Ainda não possui conta? <a href="/register">Cadastre-se</a></p>
+        <p>Ainda não possui conta? <a href="#" id="register-link">Cadastre-se</a></p>
       </form>
-  `;          // SPA - Corrigir href acima para evitar recarregamento da página!
+  `;
 
   const loginBtn = rootElement.querySelector('#login-btn');
   loginBtn.addEventListener('click', (e) => {     // Mover função de login para services!
@@ -27,7 +27,7 @@ export const Login = () => {
       .then((user) => {
         // Signed in
         console.log('Entrou!', user);
-        onNavigate('/');
+        onNavigate('/feed');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -38,6 +38,12 @@ export const Login = () => {
 
   const googleSignIn = rootElement.querySelector('#google-signin');
   googleSignIn.addEventListener('click', googleLogin);
+
+  const registerLink = rootElement.querySelector('#register-link');
+  registerLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    onNavigate('/register');
+  });
   
   return rootElement;
 };
