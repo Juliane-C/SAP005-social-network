@@ -2,6 +2,7 @@
 import { Home } from './pages/home/index.js';
 import { Login } from './pages/login/index.js';
 import { Register } from './pages/register/index.js';
+import { Feed } from './pages/feed/index.js'
 import { onNavigate } from './utils/history.js';
 
 const routeRender = () => {
@@ -10,6 +11,7 @@ const routeRender = () => {
     '/': Home,
     '/login': Login,
     '/register': Register,
+    '/feed': Feed
   };
 
   rootDiv.innerHTML = '';
@@ -36,6 +38,12 @@ window.addEventListener('load', () => {
       e.preventDefault();
       onNavigate('/register');
     });
+  /* document
+    .getElementById('feed')
+    .addEventListener('click', (e) => {
+      e.preventDefault();
+      onNavigate('/feed');
+    }); */
 
   routeRender();
 });

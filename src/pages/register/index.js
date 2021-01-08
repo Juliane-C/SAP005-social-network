@@ -13,9 +13,9 @@ export const Register = () => {
         <button id="register-btn">Cadastrar</button>
         <p>-- ou --</p>
         <button id="google-signup">Continuar com Google</button>
-        <p>Já possui conta? <a href="/login">Entrar</a></p>
+        <p>Já possui conta? <a href="#" id="login-link">Entrar</a></p>
       </form>
-  `;          // SPA - Corrigir href acima para evitar recarregamento da página!
+  `;
 
   const registerBtn = rootElement.querySelector('#register-btn');
   registerBtn.addEventListener('click', (e) => {      // Mover função de cadastro para services!
@@ -28,8 +28,9 @@ export const Register = () => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         // Signed in
+        firebase.auth().currentUser.updateProfile({displayName: username});
         console.log('Deu bom! :D', user);
-        onNavigate('/');
+        onNavigate('/feed');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -42,5 +43,11 @@ export const Register = () => {
   const googleSignUp = rootElement.querySelector('#google-signup');
   googleSignUp.addEventListener('click', googleLogin);
   
+  const loginLink = rootElement.querySelector('#login-link');
+  loginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    onNavigate('/login');
+  });
+
   return rootElement;
 };
