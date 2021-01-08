@@ -25,7 +25,7 @@ export const Home = () => {
       user_id: firebase.auth().currentUser.uid,
       date: new Date()
     }
-    postsCollection.add(post) //.then(() => {postsArea.innerHTML = message.value;})
+    postsCollection.add(post)//.then(() => {postsArea.innerHTML = message.value;})
   };
 
   function addPost(post) {
@@ -37,28 +37,16 @@ export const Home = () => {
     postsArea.innerHTML += postTemplate;
   }
 
-  
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
     postsCollection.get().then(snap => {
       postsArea.innerHTML = '';
       snap.forEach(post => {
-        addPost(post); //aqui está sendo chamada a função de adicionar post já com os valores
+        addPost(post);
       })
     })
   }
   loadPosts();
-
-  //colocar essa função dentro dos posts
-
-  /*function excluirPost(idPost){
-    postsCollection.doc(idPost).delete().then(doc => {
-      console.log("Eu consegui apagar!");
-      loadPosts()
-    })//add um .catch
-  }
-  excluirPost("k6u9XlOx2KVy8pLbuMgNfBROziF3"); //testar o id existente do post aqui para ver se esta apagando de fato 
-*/
+  
   return rootElement;
 };
-
