@@ -16,7 +16,7 @@ export const googleLogin = (e) => {
       // The signed-in user info.
       const user = result.user;
       // ...
-      console.log('Googlou!') 
+      console.log('Googlou!');
       console.log(token, user);
       onNavigate('/feed');
     })
@@ -34,16 +34,47 @@ export const googleLogin = (e) => {
     });
 };
 
+export const emailRegister = (username, email, password) => {
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((user) => {
+      // Signed in
+      firebase.auth().currentUser.updateProfile({ displayName: username });
+      console.log('Deu bom! :D', user);
+      onNavigate('/feed');
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      console.log('Deu ruim! :(', errorCode, errorMessage);
+    });
+};
+
+export const emailLogin = (email, password) => {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      // Signed in
+      console.log('Entrou!', user);
+      onNavigate('/feed');
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Entrou não...', errorCode, errorMessage);
+    });
+};
+
 export const logout = () => {
   firebase.auth().signOut()
-  .then(function() {
-    // Sign-out successful.
-    console.log('Saiu!');
-    onNavigate('/');
-  })
-  .catch(function(error) {
-    // An error happened.
-  });
+    .then(() => {
+      // Sign-out successful.
+      console.log('Saiu!');
+      onNavigate('/');
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
 };
 
 /*

@@ -1,4 +1,4 @@
-import { googleLogin } from '../../services/index.js';
+import { googleLogin, emailRegister } from '../../services/index.js';
 import { onNavigate } from '../../utils/history.js';
 
 export const Register = () => {
@@ -12,37 +12,22 @@ export const Register = () => {
         <input id="new-password" type="password" placeholder="Senha" required><br>
         <button id="register-btn">Cadastrar</button>
         <p>-- ou --</p>
-        <button id="google-signup">Continuar com Google</button>
+        <button id="google-signup-btn">Continuar com Google</button>
         <p>Já possui conta? <a href="#" id="login-link">Entrar</a></p>
       </form>
   `;
 
   const registerBtn = rootElement.querySelector('#register-btn');
-  registerBtn.addEventListener('click', (e) => {      // Mover função de cadastro para services!
+  registerBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const username = rootElement.querySelector('#username').value;
     const email = rootElement.querySelector('#new-email').value;
     const password = rootElement.querySelector('#new-password').value;
-    console.log(username, email, password);
-
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        // Signed in
-        firebase.auth().currentUser.updateProfile({displayName: username});
-        console.log('Deu bom! :D', user);
-        onNavigate('/feed');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-        console.log('Deu ruim! :(', errorCode, errorMessage);
-      });
+    emailRegister(username, email, password);
   });
 
-  const googleSignUp = rootElement.querySelector('#google-signup');
-  googleSignUp.addEventListener('click', googleLogin);
-  
+  const googleSignUpBtn = rootElement.querySelector('#google-signup-btn');
+  googleSignUpBtn.addEventListener('click', googleLogin);
   const loginLink = rootElement.querySelector('#login-link');
   loginLink.addEventListener('click', (e) => {
     e.preventDefault();
