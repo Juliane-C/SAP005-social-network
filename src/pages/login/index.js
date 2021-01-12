@@ -1,4 +1,4 @@
-import { googleLogin } from '../../services/index.js';
+import { googleLogin, emailLogin } from '../../services/index.js';
 import { onNavigate } from '../../utils/history.js';
 
 export const Login = () => {
@@ -11,39 +11,26 @@ export const Login = () => {
         <input id="user-password" type="password" placeholder="Senha" required><br>
         <button id="login-btn">Entrar</button>
         <p>-- ou --</p>
-        <button id="google-signin">Entrar com Google</button>
+        <button id="google-signin-btn">Entrar com Google</button>
         <p>Ainda não possui conta? <a href="#" id="register-link">Cadastre-se</a></p>
       </form>
   `;
 
   const loginBtn = rootElement.querySelector('#login-btn');
-  loginBtn.addEventListener('click', (e) => {     // Mover função de login para services!
+  loginBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const email = rootElement.querySelector('#user-email').value;
     const password = rootElement.querySelector('#user-password').value;
-    console.log(email, password);
-
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        // Signed in
-        console.log('Entrou!', user);
-        onNavigate('/feed');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('Entrou não...', errorCode, errorMessage);
-      });
+    emailLogin(email, password);
   });
 
-  const googleSignIn = rootElement.querySelector('#google-signin');
-  googleSignIn.addEventListener('click', googleLogin);
+  const googleSignInBtn = rootElement.querySelector('#google-signin-btn');
+  googleSignInBtn.addEventListener('click', googleLogin);
 
   const registerLink = rootElement.querySelector('#register-link');
   registerLink.addEventListener('click', (e) => {
     e.preventDefault();
     onNavigate('/register');
   });
-  
   return rootElement;
 };

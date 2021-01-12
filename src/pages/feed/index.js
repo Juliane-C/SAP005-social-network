@@ -28,19 +28,24 @@ export const Feed = () => {
       message: message.value,
       user_id: firebase.auth().currentUser.uid,
       username: firebase.auth().currentUser.displayName,
-      date: new Date()
-    }
-    postsCollection.add(post).then(result => {
-      message.value = ''
-      loadPosts()
-    })
-  };
+      date: new Date().toLocaleString(),
+    };
+    postsCollection.add(post).then(() => {
+      message.value = '';
+      loadPosts();
+    });
+  }
 
   function addPost(post) {
     const postTemplate = `
       <div class='posts' id='${post.id}'>
         <p><b>${post.data().username}</b></p>
+        <p>${post.data().date}</p>
         <p>${post.data().message}</p>
+        <div class='edit-del-btns'>
+          <button class='edit-btns'>Editar</button>
+          <button class='delete-btns'>Apagar</button>
+        </div>
       </div>
     `;
     postsArea.innerHTML += postTemplate;
@@ -48,14 +53,13 @@ export const Feed = () => {
 
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
-    postsCollection.get().then(snap => {
+    postsCollection.orderBy('date', 'desc').get().then((snap) => {
       postsArea.innerHTML = '';
-      snap.forEach(post => {
+      snap.forEach((post) => {
         addPost(post);
-      })
-    })
+      });
+    });
   }
   loadPosts();
-  
   return rootElement;
 };
