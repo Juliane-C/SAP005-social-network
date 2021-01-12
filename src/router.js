@@ -16,6 +16,9 @@ const routeRender = () => {
 
   rootDiv.innerHTML = '';
   rootDiv.appendChild(routes[window.location.pathname]());
+  /* Na linha 18 está criando uma "div filha",que está "chamando" para o HTML
+  uma das propiedades do objeto routes, que acaba por chamar a função
+  correspondente aquele objeto. Tudo isso através do esquema de importação.*/
 };
 
 window.addEventListener('popstate', routeRender);

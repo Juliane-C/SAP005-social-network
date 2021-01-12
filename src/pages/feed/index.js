@@ -37,8 +37,11 @@ export const Feed = () => {
   }
 
   function addPost(post) {
-    const postTemplate = `
-      <div class='posts' id='${post.id}'>
+    const postTemplate = document.createElement('div');
+    postTemplate.classList.add('posts');
+    postTemplate.setAttribute('id', post.id);
+
+    postTemplate.innerHTML= `
         <p><b>${post.data().username}</b></p>
         <p>${post.data().date}</p>
         <p>${post.data().message}</p>
@@ -46,20 +49,41 @@ export const Feed = () => {
           <button class='edit-btns'>Editar</button>
           <button class='delete-btns'>Apagar</button>
         </div>
-      </div>
     `;
-    postsArea.innerHTML += postTemplate;
+
+    const deleteBtn = postTemplate.querySelector('.delete-btns');
+    deleteBtn.addEventListener('click', ()=>{
+      let confirmAction = confirm('Você realmente deseja apagar?');
+
+      if(confirmAction == true) {
+        console.log(post.id);
+      } else {
+        console.log('Nada foi apagado.');
+      }
+
+    });
+    return postTemplate;
   }
+
+  function removePost(id){
+    postsCollection.doc(id).delete().then(() => {
+      console.log('Apagou!');
+      }).catch(function(error) {
+      console.error('Erro ao excluir o post: ', error);
+      });
+    }
+    console.log(removePost('mMd8CrEagnjV54fe0Zni')); //testar o id existente do post aqui para ver se esta apagando de fato.
 
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
     postsCollection.orderBy('date', 'desc').get().then((snap) => {
       postsArea.innerHTML = '';
       snap.forEach((post) => {
-        addPost(post);
+        postsArea.appendChild(addPost(post));
       });
     });
   }
   loadPosts();
+
   return rootElement;
 };
