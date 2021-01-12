@@ -38,8 +38,8 @@ export const Feed = () => {
 
   function addPost(post) {
     const postTemplate = document.createElement('div');
-    postTemplate.classList.add('posts');
-    postTemplate.setAttribute('id', post.id);
+    postTemplate.classList.add('posts'); //como funciona esse classList?
+    postTemplate.setAttribute('id', post.id); //Como funciona o SetAttribute?
 
     postTemplate.innerHTML= `
         <p><b>${post.data().username}</b></p>
@@ -57,6 +57,8 @@ export const Feed = () => {
 
       if(confirmAction == true) {
         console.log(post.id);
+        removePost(post.id);
+        loadPosts();
       } else {
         console.log('Nada foi apagado.');
       }
@@ -72,7 +74,7 @@ export const Feed = () => {
       console.error('Erro ao excluir o post: ', error);
       });
     }
-    console.log(removePost('mMd8CrEagnjV54fe0Zni')); //testar o id existente do post aqui para ver se esta apagando de fato.
+    //console.log(removePost(id)); //testar o id existente do post aqui para ver se esta apagando de fato.
 
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
