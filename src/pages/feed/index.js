@@ -14,12 +14,13 @@ export const Feed = () => {
   `;
 
   const logoutBtn = rootElement.querySelector('#logout-btn');
+  logoutBtn.addEventListener('click', logout);
+
   const message = rootElement.querySelector('#message');
-  const postBtn = rootElement.querySelector('#post-btn');
   const postsArea = rootElement.querySelector('#posts-area');
   const postsCollection = firebase.firestore().collection('posts');
 
-  logoutBtn.addEventListener('click', logout);
+  const postBtn = rootElement.querySelector('#post-btn');
   postBtn.addEventListener('click', createPost);
 
   function createPost(e) {
@@ -28,7 +29,7 @@ export const Feed = () => {
       message: message.value,
       user_id: firebase.auth().currentUser.uid,
       username: firebase.auth().currentUser.displayName,
-      date: new Date().toLocaleString(),
+      date: new Date().toLocaleString('pt-BR'),
     };
     postsCollection.add(post).then(() => {
       message.value = '';
@@ -38,43 +39,78 @@ export const Feed = () => {
 
   function addPost(post) {
     const postTemplate = document.createElement('div');
-    postTemplate.classList.add('posts'); //como funciona esse classList?
-    postTemplate.setAttribute('id', post.id); //Como funciona o SetAttribute?
+    postTemplate.classList.add('posts'); // como funciona esse classList?
+    postTemplate.setAttribute('id', post.id); // Como funciona o SetAttribute?
 
-    postTemplate.innerHTML= `
+    postTemplate.innerHTML = `
         <p><b>${post.data().username}</b></p>
         <p>${post.data().date}</p>
         <p>${post.data().message}</p>
         <div class='edit-del-btns'>
-          <button class='edit-btns'>Editar</button>
-          <button class='delete-btns'>Apagar</button>
+          <button class='edit-btn'>Editar</button>
+          <button class='delete-btn'>Apagar</button>
+        </div>
+
+        <div class='editing-area'>
+          <hr>
+          <textarea class='edit-text'>${post.data().message}</textarea><br>
+          <button class='save-edit-btn'>Salvar</button>
+          <button class='cancel-edit-btn'>Cancelar</button>
         </div>
     `;
 
-    const deleteBtn = postTemplate.querySelector('.delete-btns');
-    deleteBtn.addEventListener('click', ()=>{
-      let confirmAction = confirm('Você realmente deseja apagar?');
+    const editBtnArray = postTemplate.querySelectorAll('.edit-btn');
+    editBtnArray.forEach((editBtn) => {
+      editBtn.addEventListener('click', () => {
+        postTemplate.querySelector('.editing-area').classList.add('display');
+      });
+    });
 
-      if(confirmAction == true) {
-        console.log(post.id);
+    const editedText = postTemplate.querySelector('.edit-text');
+
+    function editPost() {
+      postsCollection.doc(post.id).update({ message: editedText.value })
+      // console.log(post.id);
+        .then(() => {
+          loadPosts();
+          console.log('Editou!');
+        });
+    }
+
+    const saveEditBtn = postTemplate.querySelector('.save-edit-btn');
+    saveEditBtn.addEventListener('click', editPost);
+
+    const cancelEditBtn = postTemplate.querySelector('.cancel-edit-btn');
+    cancelEditBtn.addEventListener('click', () => {
+      postTemplate.querySelector('.editing-area').classList.remove('display');
+    });
+
+    const deleteBtn = postTemplate.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      const confirmAction = confirm('Você realmente deseja apagar?');
+      if (confirmAction === true) {
+        // console.log(post.id);
         removePost(post.id);
         loadPosts();
       } else {
         console.log('Nada foi apagado.');
       }
-
     });
+
     return postTemplate;
   }
 
-  function removePost(id){
-    postsCollection.doc(id).delete().then(() => {
-      console.log('Apagou!');
-      }).catch(function(error) {
-      console.error('Erro ao excluir o post: ', error);
+  function removePost(id) {
+    postsCollection.doc(id).delete()
+      .then(() => {
+        console.log('Apagou!');
+      })
+      .catch((error) => {
+        console.error('Erro ao excluir o post: ', error);
       });
-    }
-    //console.log(removePost(id)); //testar o id existente do post aqui para ver se esta apagando de fato.
+  }
+  // console.log(removePost(id));
+  // testar o id existente do post aqui para ver se esta apagando de fato.
 
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
