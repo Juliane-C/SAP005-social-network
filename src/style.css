@@ -18,6 +18,14 @@ p {
     margin: 5pt;
 }
 
+.editing-area {
+    display: none;
+}
+
+.editing-area.display {
+    display: block;
+}
+
 h1 {
     text-align: center;
     margin-top: 40px;
@@ -29,11 +37,16 @@ nav {
 }
 
 ul {
-    margin:5px auto;
-    /* text-align: center */
- }
+    margin: 5px auto;
+    padding-inline-start: 0;
+    text-align: center;
+}
 
 li {
-    display:inline;
+    display: inline;
+    padding: 10pt;
 }
     
+#logout-btn {
+    margin-left: 85%;
+}
