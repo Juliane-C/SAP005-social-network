@@ -12,7 +12,7 @@ export const Feed = () => {
       </form>
       <section id="posts-area"></section>
   `;
-
+  
   const logoutBtn = rootElement.querySelector('#logout-btn');
   logoutBtn.addEventListener('click', logout);
 
@@ -22,14 +22,16 @@ export const Feed = () => {
 
   const postBtn = rootElement.querySelector('#post-btn');
   postBtn.addEventListener('click', createPost);
+  const userId = firebase.auth().currentUser.uid
 
   function createPost(e) {
     e.preventDefault();
     const post = {
       message: message.value,
-      user_id: firebase.auth().currentUser.uid,
+      user_id: userId,
       username: firebase.auth().currentUser.displayName,
       date: new Date().toLocaleString('pt-BR'),
+      likes: [],
     };
     postsCollection.add(post).then(() => {
       message.value = '';
@@ -39,8 +41,8 @@ export const Feed = () => {
 
   function addPost(post) {
     const postTemplate = document.createElement('div');
-    postTemplate.classList.add('posts'); // como funciona esse classList?
-    postTemplate.setAttribute('id', post.id); // Como funciona o SetAttribute?
+    postTemplate.classList.add('posts'); //está criando uma lista com todos os class='post'
+    postTemplate.setAttribute('id', post.id); //está acessando o id do class='post' que for selecionado 
 
     postTemplate.innerHTML = `
         <p><b>${post.data().username}</b></p>
@@ -49,6 +51,7 @@ export const Feed = () => {
         <div class='edit-del-btns'>
           <button class='edit-btn'>Editar</button>
           <button class='delete-btn'>Apagar</button>
+          <button class='like-btn'>❤️${post.data().likes.length}</button>
         </div>
 
         <div class='editing-area'>
@@ -58,6 +61,11 @@ export const Feed = () => {
           <button class='cancel-edit-btn'>Cancelar</button>
         </div>
     `;
+
+    const likeBtn = postTemplate.querySelector('.like-btn');
+    likeBtn.addEventListener('click', (e) => {
+      addLike(e, post);
+    });
 
     const editBtnArray = postTemplate.querySelectorAll('.edit-btn');
     editBtnArray.forEach((editBtn) => {
@@ -100,6 +108,27 @@ export const Feed = () => {
     return postTemplate;
   }
 
+  function addLike(e, post) {
+    //console.log(post);
+    e.target.classList.add('curtidas')
+    const userLiked = post.data().likes.find(user => user === userId)
+    console.log(userLiked);
+        if (userLiked) {
+          postsCollection.doc(post.id).update({ likes: []})
+          // console.log(post.id);
+          .then(() => {
+          loadPosts();
+          console.log('Removeu like');
+          });
+        } else {
+          postsCollection.doc(post.id).update({ likes:[userId]})
+          .then(() => {
+            loadPosts();
+            console.log('Add like');
+          });
+        }
+  }
+
   function removePost(id) {
     postsCollection.doc(id).delete()
       .then(() => {
@@ -109,8 +138,6 @@ export const Feed = () => {
         console.error('Erro ao excluir o post: ', error);
       });
   }
-  // console.log(removePost(id));
-  // testar o id existente do post aqui para ver se esta apagando de fato.
 
   function loadPosts() {
     postsArea.innerHTML = 'Carregando...';
