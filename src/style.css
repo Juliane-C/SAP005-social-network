@@ -10,20 +10,20 @@ form {
     text-align: center;
 }
 
-p {
-    margin: 10pt;
+textarea {
+    margin: 5pt;
 }
 
 .posts {
     border-radius: 5px;
     margin: 15pt;
     border: solid 1pt lightgray;
-    padding: 2pt;
+    padding: 10pt;
+    text-align: justify;
 }
 
-.edit-del-btns {
+.container-btns {
     text-align: right;
-    margin: 5pt;
 }
 
 .editing-area {
@@ -32,6 +32,7 @@ p {
 
 .editing-area.display {
     display: block;
+    text-align: center;
 }
 
 h1 {

@@ -7,12 +7,12 @@ export const Feed = () => {
       <button id="logout-btn">Sair</button>
       <h1>Olá, ${firebase.auth().currentUser.displayName}!</h1>
       <form id="post-form">
-        <textarea id="message" cols="25" rows="5" placeholder="O que você quer compartilhar?"></textarea><br>
-        <button id="post-btn">Publicar</button>
+        <textarea id="message" cols="30" rows="5" placeholder="O que você quer compartilhar?"></textarea><br>
+        <button id="post-btn">Postar!</button>
       </form>
       <section id="posts-area"></section>
   `;
-  
+
   const logoutBtn = rootElement.querySelector('#logout-btn');
   logoutBtn.addEventListener('click', logout);
 
@@ -22,7 +22,7 @@ export const Feed = () => {
 
   const postBtn = rootElement.querySelector('#post-btn');
   postBtn.addEventListener('click', createPost);
-  const userId = firebase.auth().currentUser.uid
+  const userId = firebase.auth().currentUser.uid;
 
   function createPost(e) {
     e.preventDefault();
@@ -41,17 +41,17 @@ export const Feed = () => {
 
   function addPost(post) {
     const postTemplate = document.createElement('div');
-    postTemplate.classList.add('posts'); //está criando uma lista com todos os class='post'
-    postTemplate.setAttribute('id', post.id); //está acessando o id do class='post' que for selecionado 
+    postTemplate.classList.add('posts'); // está criando uma lista com todos os class='post'
+    postTemplate.setAttribute('id', post.id); // está acessando o id do class='post' que for selecionado
 
     postTemplate.innerHTML = `
-        <p><b>${post.data().username}</b></p>
-        <p>${post.data().date}</p>
+        <p><b>${post.data().username}</b>
+        <br>${post.data().date}</p>
         <p>${post.data().message}</p>
-        <div class='edit-del-btns'>
+        <div class='container-btns'>
           <button class='edit-btn'>Editar</button>
           <button class='delete-btn'>Apagar</button>
-          <button class='like-btn'>❤️${post.data().likes.length}</button>
+          <button class='like-btn'>❤️ ${post.data().likes.length}</button>
         </div>
 
         <div class='editing-area'>
@@ -62,9 +62,14 @@ export const Feed = () => {
         </div>
     `;
 
+    if (userId !== post.data().user_id) {
+      postTemplate.querySelector('.edit-btn').style.display = 'none';
+      postTemplate.querySelector('.delete-btn').style.display = 'none';
+    }
+
     const likeBtn = postTemplate.querySelector('.like-btn');
-    likeBtn.addEventListener('click', (e) => {
-      addLike(e, post);
+    likeBtn.addEventListener('click', () => {
+      addLike(post);
     });
 
     const editBtnArray = postTemplate.querySelectorAll('.edit-btn');
@@ -74,9 +79,8 @@ export const Feed = () => {
       });
     });
 
-    const editedText = postTemplate.querySelector('.edit-text');
-
     function editPost() {
+      const editedText = postTemplate.querySelector('.edit-text');
       postsCollection.doc(post.id).update({ message: editedText.value })
       // console.log(post.id);
         .then(() => {
@@ -95,7 +99,7 @@ export const Feed = () => {
 
     const deleteBtn = postTemplate.querySelector('.delete-btn');
     deleteBtn.addEventListener('click', () => {
-      const confirmAction = confirm('Você realmente deseja apagar?');
+      const confirmAction = window.confirm('Você realmente deseja apagar?');
       if (confirmAction === true) {
         // console.log(post.id);
         removePost(post.id);
@@ -108,25 +112,29 @@ export const Feed = () => {
     return postTemplate;
   }
 
-  function addLike(e, post) {
-    //console.log(post);
-    e.target.classList.add('curtidas')
-    const userLiked = post.data().likes.find(user => user === userId)
+  function addLike(post) {
+    // console.log(post);
+    // e.target.classList.add('curtidas')
+    const userLiked = post.data().likes.find((user) => user === userId);
     console.log(userLiked);
-        if (userLiked) {
-          postsCollection.doc(post.id).update({ likes: []})
-          // console.log(post.id);
-          .then(() => {
+    if (userLiked) {
+      postsCollection.doc(post.id).update({
+        likes: firebase.firestore.FieldValue.arrayRemove(userId),
+      })
+      // console.log(post.id);
+        .then(() => {
           loadPosts();
           console.log('Removeu like');
-          });
-        } else {
-          postsCollection.doc(post.id).update({ likes:[userId]})
-          .then(() => {
-            loadPosts();
-            console.log('Add like');
-          });
-        }
+        });
+    } else {
+      postsCollection.doc(post.id).update({
+        likes: firebase.firestore.FieldValue.arrayUnion(userId),
+      })
+        .then(() => {
+          loadPosts();
+          console.log('Deu like');
+        });
+    }
   }
 
   function removePost(id) {
