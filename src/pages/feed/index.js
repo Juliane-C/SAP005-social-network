@@ -32,10 +32,15 @@ export const Feed = () => {
       date: new Date().toLocaleString('pt-BR'),
       likes: [],
     };
-    postsCollection.add(post).then(() => {
-      message.value = '';
-      loadPosts();
-    });
+    
+     if (message.value == '') {
+       alert('Opa! Você precisa inserir uma mensagem para publicar.');
+     } else {
+       postsCollection.add(post).then(() => {
+       message.value = '';
+       loadPosts();
+       });
+      }
   }
 
   function addPost(post) {

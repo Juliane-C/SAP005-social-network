@@ -1,12 +1,15 @@
 html, body {
     height: 88%;
-    /* font-family:  ; */
+    font-family: Arial;
+    background-color: #60b8f3;
+    color: #ffffff;
 }
 
 #root {
     min-height: 100%;
     position: relative;
     padding-bottom: 30px;
+    font-size: 15px;
 }
 
 form {
@@ -14,11 +17,24 @@ form {
 }
 
 .user-input {
+    padding-inline: 5px;
     margin: 5pt;
+    margin-bottom: 20px;
+    width: 220px;
+    height: 35px;
+    border-radius: 10px;
+    border: 15px;
+}
+
+#register-link {
+    color: #ffffff;
+    font-weight: bold;
 }
 
 textarea {
     margin: 5pt;
+    background-color: #abcde9;
+    color: #ffffff;
 }
 
 .posts {
@@ -27,6 +43,7 @@ textarea {
     border: solid 1pt lightgray;
     padding: 10pt;
     text-align: justify;
+    background-color: #3183c7;
 }
 
 .container-btns {
@@ -50,6 +67,8 @@ h1, h2 {
 nav {
     top: 0;
     width: 100%;
+    color: #416be7;
+    font-weight: bold;
 }
 
 ul {
@@ -64,7 +83,46 @@ li {
 }
     
 #logout-btn {
-    margin-left: 85%;
+    margin-left: 75%;
+    width: 80px;
+    height: 30px;
+    border-radius: 10px 5px;
+    border: 15px;
+    color: #ffffff;
+    background-color: #416be7;
+}
+
+.edit-btn {
+    width: 80px;
+    height: 30px;
+    border-radius: 10px 5px;
+    border: 15px;
+    background-color: #6587ec;
+}
+
+.delete-btn {
+    width: 80px;
+    height: 30px;
+    border-radius: 10px 5px;
+    border: 15px;
+    background-color: #6587ec;
+}
+
+.like-btn {
+    width: 80px;
+    height: 30px;
+    border-radius: 10px 5px;
+    border: 15px;
+        background-color: #6587ec;
+}
+
+button {
+    width: 155px;
+    height: 30px;
+    border-radius: 10px 5px;
+    border: 15px;
+    color: #ffffff;
+    background-color: #416be7;
 }
 
 a {
@@ -72,20 +130,22 @@ a {
 }
 
 a:link{
-    color: black;
+    color: #07468f;;
 }
 
 a:visited {
-    color: black;
+    color: #07468f;;
 }
 
 a:hover {
-    color: aquamarine;
+    color: #9fbdf3;
 }
 
 .footer {
-    font-size: 12px;
+    font-size: 10px;
+    font-weight: bold;
     text-align: center;
     width: 100%;
     padding-bottom: 20px;
+    color: #416be7;
 }
