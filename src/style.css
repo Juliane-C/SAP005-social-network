@@ -1,4 +1,7 @@
-html, body {height: 88%;}
+html, body {
+    height: 88%;
+    /* font-family:  ; */
+}
 
 #root {
     min-height: 100%;
@@ -8,6 +11,10 @@ html, body {height: 88%;}
 
 form {
     text-align: center;
+}
+
+.user-input {
+    margin: 5pt;
 }
 
 textarea {
@@ -35,7 +42,7 @@ textarea {
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     margin-top: 40px;
 }

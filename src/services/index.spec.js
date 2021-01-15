@@ -1,5 +1,4 @@
-// importamos la funcion que vamos a testear
-import { myFunction } from './index';
+import { myFunction } from './index.js';
 
 describe('myFunction', () => {
   it('should be a function', () => {

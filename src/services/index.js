@@ -1,10 +1,5 @@
 import { onNavigate } from '../utils/history.js';
 
-export const myFunction = () => {
-  // seu código aqui
-  console.log('Olá mundo!');
-};
-
 export const googleLogin = (e) => {
   e.preventDefault();
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -15,38 +10,35 @@ export const googleLogin = (e) => {
       const token = result.credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      // ...
-      console.log('Googlou!');
+      // console.log('Googlou!');
       console.log(token, user);
       onNavigate('/feed');
     })
     .catch((error) => {
       // Handle Errors here.
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
       // The email of the user's account used.
-      const email = error.email;
+      // const email = error.email;
       // The firebase.auth.AuthCredential type that was used.
-      const credential = error.credential;
-      // ...
-      console.log('Googlou não...');
-      console.log(errorCode, errorMessage, email, credential);
+      // const credential = error.credential;
+      alert(errorMessage);
     });
 };
 
 export const emailRegister = (username, email, password) => {
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      // Signed in
-      firebase.auth().currentUser.updateProfile({ displayName: username });
       console.log('Deu bom! :D', user);
-      onNavigate('/feed');
+      firebase.auth().currentUser.updateProfile({ displayName: username })
+        .then(() => {
+          onNavigate('/feed');
+        });
     })
     .catch((error) => {
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
-      // ..
-      console.log('Deu ruim! :(', errorCode, errorMessage);
+      alert(errorMessage);
     });
 };
 
@@ -58,9 +50,9 @@ export const emailLogin = (email, password) => {
       onNavigate('/feed');
     })
     .catch((error) => {
-      const errorCode = error.code;
+      // const errorCode = error.code;
       const errorMessage = error.message;
-      console.log('Entrou não...', errorCode, errorMessage);
+      alert(errorMessage);
     });
 };
 
@@ -68,12 +60,12 @@ export const logout = () => {
   firebase.auth().signOut()
     .then(() => {
       // Sign-out successful.
-      console.log('Saiu!');
+      // console.log('Saiu!');
       onNavigate('/');
     })
     .catch((error) => {
       // An error happened.
-      console.log(error);
+      alert(error);
     });
 };
 
@@ -109,3 +101,8 @@ export const persistence = () => {
   });
 };
 */
+
+export const myFunction = () => {
+  // seu código aqui
+  console.log('Olá mundo!');
+};
