@@ -1,16 +1,15 @@
 import { logout } from '../../services/index.js';
 
 export const Feed = () => {
-  // Coloque sua página
   const rootElement = document.createElement('div');
   rootElement.innerHTML = `
-      <button id="logout-btn">Sair</button>
-      <h1>Olá, ${firebase.auth().currentUser.displayName}!</h1>
-      <form id="post-form">
-        <textarea id="message" cols="30" rows="5" placeholder="O que você quer compartilhar?"></textarea><br>
-        <button id="post-btn">Postar!</button>
+      <button id='logout-btn'>Sair</button>
+      <h2>Olá, ${firebase.auth().currentUser.displayName}!</h2>
+      <form id='post-form'>
+        <textarea id='message' cols='30' rows='5' placeholder='O que você quer compartilhar?'></textarea><br>
+        <button id='post-btn'>Postar!</button>
       </form>
-      <section id="posts-area"></section>
+      <section id='posts-area'></section>
   `;
 
   const logoutBtn = rootElement.querySelector('#logout-btn');
@@ -41,8 +40,8 @@ export const Feed = () => {
 
   function addPost(post) {
     const postTemplate = document.createElement('div');
-    postTemplate.classList.add('posts'); // está criando uma lista com todos os class='post'
-    postTemplate.setAttribute('id', post.id); // está acessando o id do class='post' que for selecionado
+    postTemplate.classList.add('posts'); // add a class 'posts' para todas as divs criadas (1 div = 1 post)
+    postTemplate.setAttribute('id', post.id); // atribui id único para cada div (id firestore de cada post)
 
     postTemplate.innerHTML = `
         <p><b>${post.data().username}</b>
@@ -67,11 +66,6 @@ export const Feed = () => {
       postTemplate.querySelector('.delete-btn').style.display = 'none';
     }
 
-    const likeBtn = postTemplate.querySelector('.like-btn');
-    likeBtn.addEventListener('click', () => {
-      addLike(post);
-    });
-
     const editBtnArray = postTemplate.querySelectorAll('.edit-btn');
     editBtnArray.forEach((editBtn) => {
       editBtn.addEventListener('click', () => {
@@ -85,7 +79,7 @@ export const Feed = () => {
       // console.log(post.id);
         .then(() => {
           loadPosts();
-          console.log('Editou!');
+          // console.log('Editou!');
         });
     }
 
@@ -109,6 +103,11 @@ export const Feed = () => {
       }
     });
 
+    const likeBtn = postTemplate.querySelector('.like-btn');
+    likeBtn.addEventListener('click', () => {
+      addLike(post);
+    });
+
     return postTemplate;
   }
 
@@ -124,7 +123,7 @@ export const Feed = () => {
       // console.log(post.id);
         .then(() => {
           loadPosts();
-          console.log('Removeu like');
+          // console.log('Removeu like');
         });
     } else {
       postsCollection.doc(post.id).update({
@@ -132,7 +131,7 @@ export const Feed = () => {
       })
         .then(() => {
           loadPosts();
-          console.log('Deu like');
+          // console.log('Deu like');
         });
     }
   }

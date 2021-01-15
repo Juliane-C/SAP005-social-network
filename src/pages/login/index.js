@@ -2,17 +2,16 @@ import { googleLogin, emailLogin } from '../../services/index.js';
 import { onNavigate } from '../../utils/history.js';
 
 export const Login = () => {
-  // Coloque sua página
   const rootElement = document.createElement('div');
   rootElement.innerHTML = `
-      <h1>Login!</h1>
+      <h2>Acesse sua conta!</h2>
       <form>
-        <input id="user-email" type="email" placeholder="Seu e-mail" required><br>
-        <input id="user-password" type="password" placeholder="Senha" required><br>
-        <button id="login-btn">Entrar</button>
+        <input id='user-email' class='user-input' type='email' placeholder='Seu e-mail' required><br>
+        <input id='user-password' class='user-input' type='password' placeholder='Senha' required><br>
+        <button id='login-btn'>Entrar</button>
         <p>-- ou --</p>
-        <button id="google-signin-btn">Entrar com Google</button>
-        <p>Ainda não possui conta? <a href="#" id="register-link">Cadastre-se</a></p>
+        <button id='google-signin-btn'>Entrar com Google</button>
+        <p>Ainda não possui conta? <a href='#' id='register-link'>Cadastre-se</a></p>
       </form>
   `;
 
